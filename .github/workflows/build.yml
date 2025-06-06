@@ -1,0 +1,66 @@
+name: Build ESP32C6 Updater
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller cryptography psutil
+          
+      - name: Download esptool
+        run: |
+          mkdir lib
+          curl -o lib/esptool.py https://raw.githubusercontent.com/espressif/esptool/master/esptool.py
+      
+      - name: Build executable
+        run: |
+          pyinstaller --onefile --windowed --add-data "lib;lib" --name "ESP32C6_Updater" updater.py
+          
+      - name: Upload Windows executable
+        uses: actions/upload-artifact@v3
+        with:
+          name: ESP32C6_Updater_Windows
+          path: dist/ESP32C6_Updater.exe
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller cryptography psutil
+          
+      - name: Download esptool
+        run: |
+          mkdir lib
+          curl -o lib/esptool.py https://raw.githubusercontent.com/espressif/esptool/master/esptool.py
+      
+      - name: Build executable
+        run: |
+          pyinstaller --onefile --windowed --add-data "lib:lib" --name "ESP32C6_Updater" updater.py
+          
+      - name: Upload macOS executable
+        uses: actions/upload-artifact@v3
+        with:
+          name: ESP32C6_Updater_macOS
+          path: dist/ESP32C6_Updater
