@@ -9,7 +9,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -30,7 +30,7 @@ jobs:
           pyinstaller --onefile --windowed --add-data "lib;lib" --name "ESP32C6_Updater" updater.py
           
       - name: Upload Windows executable
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ESP32C6_Updater_Windows
           path: dist/ESP32C6_Updater.exe
@@ -39,7 +39,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -60,7 +60,7 @@ jobs:
           pyinstaller --onefile --windowed --add-data "lib:lib" --name "ESP32C6_Updater" updater.py
           
       - name: Upload macOS executable
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ESP32C6_Updater_macOS
           path: dist/ESP32C6_Updater
