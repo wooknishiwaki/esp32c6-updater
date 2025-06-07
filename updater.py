@@ -277,6 +277,13 @@ class ESP32C6Updater:
     
     def _build_ui(self):
         """UIを構築"""
+        # macOS用のフォーカス修正
+        if sys.platform == 'darwin':
+            self.root.tk.call('tk', 'scaling', 1.0)
+            self.root.lift()
+            self.root.attributes('-topmost', True)
+            self.root.after_idle(lambda: self.root.attributes('-topmost', False))
+        
         # メインフレーム
         main_frame = tk.Frame(self.root, padx=10, pady=10, background='#f0f0f0')
         main_frame.pack(fill=tk.BOTH, expand=True)
